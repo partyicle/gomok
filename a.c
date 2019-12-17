@@ -1,16 +1,15 @@
 #include    <stdio.h>
+#include    <windows.h>
 
 #define BOARD_SIZE 10
 #define STONE_SPACE 0
 #define STONE_BLACK 1
 #define STONE_WHITE 2
 
-typedef enum BOOL_T {FALSE,TRUE} bool_t;
-
 void gameInit(int board[][BOARD_SIZE], int *which_turn);
 void InitBoard(int board[][BOARD_SIZE]);
 void BoardPrint(int board[][BOARD_SIZE]);
-bool_t Checkout(int x, int y);
+int Checkout(int x, int y);
 void change_turn(int *which_turn);
 void input_hantei(int board[][BOARD_SIZE], int which);
 int result_check(int board[][BOARD_SIZE]);
@@ -19,7 +18,7 @@ int result_check(int board[][BOARD_SIZE]);
 int i = 0;
 int j = 0;
 
-
+//メイン処理//
 int main(void) {
 
 	int board[BOARD_SIZE][BOARD_SIZE];	//ボードのサイズ10×10//
@@ -105,7 +104,7 @@ void BoardPrint(int board[][BOARD_SIZE]) {
 
 			case STONE_WHITE:
 				printf("〇");
-
+				break;
 			
 			}
 			
@@ -139,20 +138,20 @@ void change_turn(int *which_turn) {
 }
 
 //ボードからはみ出していないかの調査//
-bool_t Checkout(int x, int y) {
+int Checkout(int x, int y) {
 
 	
-	if (x< BOARD_SIZE&&y< BOARD_SIZE&&x>=0&&y>=0) {
+	if (x< BOARD_SIZE && y< BOARD_SIZE && x>=0 && y>=0) {
 	
-		return TRUE;
+		return 1;
 
 	}
 
-	return FALSE;
+	return 0;
+
 }
 
 //勝利判定//
-
 int result_check(int board[][BOARD_SIZE]){
 	
 	int blacklencheck = 0;
@@ -162,7 +161,7 @@ int result_check(int board[][BOARD_SIZE]){
 
 		for (j = 0; j < BOARD_SIZE; j++) {
 
-			if (board[i][j] == board[i][j + 1] || board[i][j] == board[i + 1][j]
+			if (board[i][j] == board[i][j + 1] || board[i][j] == board[i + 1][j]  //そろったときに判定をプラス1する//
 				|| board[i][j] == board[i + 1][j + 1]) {
 
 				switch (board[i][j]) {
@@ -181,7 +180,26 @@ int result_check(int board[][BOARD_SIZE]){
 					break;
 				}
 
+				if (board[i][j] != board[i][j + 2] || board[i][j] != board[i + 2][j] ||  //縦横斜めが3個以上そろわないときは初期化//
+					board[i][j] != board[i + 2][j + 2]) {
 
+					switch (board[i][j]) {
+
+					case STONE_BLACK:
+
+						blacklencheck = 0;
+						break;
+
+					case STONE_WHITE:
+
+						whitelencheck = 0;
+						break;
+
+					case STONE_SPACE:
+						break;
+
+					}
+				}
 			}
 		}
 	}
@@ -214,19 +232,19 @@ void input_hantei(int board[][BOARD_SIZE], int which) {
 		if (which == 1) {
 
 
-			printf("●の番です。どちらに置きますか??\n");
+			printf("●の番です。どちらに置きますか??");
 			
 
 		}
 		else if (which == 2) {
 
-			printf("〇の番です。どちらに置きますか??\n");
+			printf("〇の番です。どちらに置きますか??");
 
 		}
 
 		while (1) {
-			
-			scanf_s("%d %d", &pos_x,&pos_y);
+				
+			scanf_s("%d %d", &pos_x, &pos_y);
 			
 			if (Checkout(pos_x, pos_y) && board[pos_y][pos_x] == STONE_SPACE) {
 				
@@ -241,7 +259,7 @@ void input_hantei(int board[][BOARD_SIZE], int which) {
 					break;
 
 				}
-				puts("input ok");
+				
 				break; 
 			}
 
@@ -249,6 +267,7 @@ void input_hantei(int board[][BOARD_SIZE], int which) {
 		
 		}
 		board[pos_y][pos_x] = which;
+
 }
 
 
