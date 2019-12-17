@@ -190,30 +190,29 @@ int result_check(int board[][BOARD_SIZE]) {
 	*/
 
 	//縦の勝利判定//
-	for (i = 0; i < BOARD_SIZE;i++) {
+	for (i = 0; i < BOARD_SIZE - 4;i++) {
 			
 		for (j = 0; j < BOARD_SIZE; j++) {
 
 			
-			if (i<7) {
 
-				//3個目4個目5個目も最初に置いたものと一緒だったら//
-				if (board[i][j] == board[i + 2][j] && board[i][j] == board[i + 3][j] && board[i][j] == board[i + 4][j]) {
+			//3個目4個目5個目も最初に置いたものと一緒だったら//
+			if (board[i][j] == board[i + 2][j] && board[i][j] == board[i + 3][j] && board[i][j] == board[i + 4][j]) {
 
-					switch (board[i][j]) {
+				switch (board[i][j]) {
 
-						case STONE_BLACK:
-						winnerBlack++;
-						break;
+					case STONE_BLACK:
+					winnerBlack++;
+					break;
 
-					case STONE_WHITE:
-						winnerWhite++;
-						break;
-
-					}
+				case STONE_WHITE:
+					winnerWhite++;
+					break;
 
 				}
+
 			}
+			
 
 		}
 	}
@@ -222,23 +221,21 @@ int result_check(int board[][BOARD_SIZE]) {
 	//横の勝利判定//
 	for (i = 0; i < BOARD_SIZE; i++) {
 
-		for (j = 0; j < BOARD_SIZE; j++) {
+		for (j = 0; j < BOARD_SIZE - 4; j++) {
 
-			if (j < 7) {
-				//3個目4個目5個目で置いたものが一緒だったら//
-				if (board[i][j] == board[i][j + 2] && board[i][j] == board[i][j + 3] && board[i][j] == board[i][j + 4]) {
+			//3個目4個目5個目で置いたものが一緒だったら//
+			if (board[i][j] == board[i][j + 2] && board[i][j] == board[i][j + 3] && board[i][j] == board[i][j + 4]) {
 
-					switch (board[i][j]) {
+				switch (board[i][j]) {
 
-					case STONE_BLACK:
-						winnerBlack++;
-						break;
+				case STONE_BLACK:
+					winnerBlack++;
+					break;
 
-					case STONE_WHITE:
-						winnerWhite++;
-						break;
+				case STONE_WHITE:
+					winnerWhite++;
+					break;
 
-					}
 				}
 			}
 			
@@ -248,9 +245,9 @@ int result_check(int board[][BOARD_SIZE]) {
 	}
 
 	//斜めの勝利判定//
-	for (i = 0; i < BOARD_SIZE; i++) {
+	for (i = 0; i < BOARD_SIZE - 4; i++) {
 
-		for (j = 0; j < BOARD_SIZE; j++) {
+		for (j = 0; j < BOARD_SIZE - 4; j++) {
 
 			if (board[i][j] == board[i+1][j + 1]) {		//碁石の色が並べば連続カウントをする//
 
@@ -266,24 +263,24 @@ int result_check(int board[][BOARD_SIZE]) {
 
 				}
 
-				if (i < 7 && j < 7) {
-					//3個目4個目5個目で置いたものが一緒だったら//
-					if (board[i][j] == board[i + 2][j + 2] || board[i][j] == board[i + 3][j + 3] || board[i][j] == board[i + 4][j + 4]) {
 
-						switch (board[i][j]) {
+				//3個目4個目5個目で置いたものが一緒だったら//
+				if (board[i][j] == board[i + 2][j + 2] || board[i][j] == board[i + 3][j + 3] || board[i][j] == board[i + 4][j + 4]) {
 
-						case STONE_BLACK:
-							winnerBlack++;
-							break;
+					switch (board[i][j]) {
 
-						case STONE_WHITE:
-							winnerWhite++;
-							break;
+					case STONE_BLACK:
+						winnerBlack++;
+						break;
 
-						}
+					case STONE_WHITE:
+						winnerWhite++;
+						break;
 
 					}
+
 				}
+				
 			}
 
 		}
@@ -291,12 +288,12 @@ int result_check(int board[][BOARD_SIZE]) {
 	}
 
 
-	if (winnerWhite==1) {
+	if (winnerWhite >= 5) {
 
 		printf("白の勝ちです。\n");
 		return TRUE;
 	}
-	else if ( winnerBlack == 1) {
+	else if ( winnerBlack >= 5) {
 
 		printf("黒の勝ちです。\n");
 		return TRUE;
@@ -329,8 +326,9 @@ void input_hantei(int board[][BOARD_SIZE], int which) {
 
 	}
 
-	while (1) {
 
+	while (1) {
+		printf("\n");
 		scanf_s("%d %d", &pos_x, &pos_y);
 
 		if (Checkout(pos_x, pos_y) && board[pos_y][pos_x] == STONE_SPACE) {
