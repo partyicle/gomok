@@ -13,8 +13,7 @@ void change_turn(int *which_turn);
 void input_hantei(int board[][BOARD_SIZE], int which);
 int result_check(int board[][BOARD_SIZE]);
 
-int true = 1;
-int false = 0;
+
 int i = 0;
 int j = 0;
 
@@ -61,14 +60,6 @@ void InitBoard(int board[][BOARD_SIZE]) {
 
 	}
 
-	board[0][0] = 1;
-	board[0][1] = 1;
-	board[1][0] = 1;
-	board[1][1] = 1;
-	board[0][2] = 1;
-	board[0][3] = 1;
-	board[0][4] = 1;
-
 }
 
 //ゲームの初期化//
@@ -107,11 +98,9 @@ void BoardPrint(int board[][BOARD_SIZE]) {
 
 			case STONE_BLACK:
 				printf("●");
-				break;
 
 			case STONE_WHITE:
 				printf("〇");
-				break;
 
 
 			}
@@ -151,58 +140,74 @@ int Checkout(int x, int y) {
 
 	if (x < BOARD_SIZE&&y < BOARD_SIZE&&x >= 0 && y >= 0) {
 
-		return 1;
+		return true;
 
 	}
 
-	return 0;
+	return false;
 }
 
 //勝利判定//
 
 int result_check(int board[][BOARD_SIZE]) {
 
-	int blacklencheck = 0;
-	int whitelencheck = 0;
+	int winnerBlack = 0;
+	int winnerWhite = 0;
 
-	
+	/*
+	for (i = 0; i < BOARD_SIZE; i++) {
+
+		for (j = 0; j < BOARD_SIZE; j++) {
+
+			if (board[i][j] == board[i][j + 1] || board[i][j] == board[i + 1][j]
+				|| board[i][j] == board[i + 1][j + 1]) {
+
+				switch (board[i][j]) {
+
+				case STONE_BLACK:
+
+					blacklencheck++;
+					break;
+
+				case STONE_WHITE:
+
+					whitelencheck++;
+					break;
+
+				case STONE_SPACE:
+					break;
+				}
+
+
+			}
+		}
+	}
+	*/
 
 	//縦の勝利判定//
 	for (i = 0; i < BOARD_SIZE;i++) {
 			
 		for (j = 0; j < BOARD_SIZE; j++) {
 
-			if (board[i][j] == board[i + 1][j]) {	//碁石の色が並べば連続カウントをする//
+			
+			if (i<7) {
 
-				switch (board[i][j]) {
-
-				case STONE_BLACK:
-					blacklencheck++;
-					break;
-
-				case STONE_WHITE:
-					whitelencheck++;
-					break;
-
-				}
-
-				//3個目4個目5個目で碁石の色が違えば初期化する//
-				if (board[i][j] != board[i + 2][j] || board[i][j] != board[i + 3][j] || board[i][j] != board[i + 4][j]) {
+				//3個目4個目5個目も最初に置いたものと一緒だったら//
+				if (board[i][j] == board[i + 2][j] && board[i][j] == board[i + 3][j] && board[i][j] == board[i + 4][j]) {
 
 					switch (board[i][j]) {
 
-					case STONE_BLACK:
-						blacklencheck = 0;
+						case STONE_BLACK:
+						winnerBlack++;
 						break;
 
 					case STONE_WHITE:
-						whitelencheck = 0;
+						winnerWhite++;
 						break;
 
 					}
 
 				}
-
 			}
 
 		}
@@ -214,39 +219,24 @@ int result_check(int board[][BOARD_SIZE]) {
 
 		for (j = 0; j < BOARD_SIZE; j++) {
 
-			if (board[i][j] == board[i][j+1]) {		//碁石の色が並べば連続カウントをする//
-
-				switch (board[i][j]) {
-
-				case STONE_BLACK:
-					blacklencheck++;
-					break;
-
-				case STONE_WHITE:
-					whitelencheck++;
-					break;
-
-				}
-
-
-				//3個目4個目5個目で碁石の色が違えば初期化する//
-				if (board[i][j] != board[i][j + 2] || board[i][j] != board[i][j + 3] || board[i][j] != board[i][j + 4]) {
+			if (j < 7) {
+				//3個目4個目5個目で置いたものが一緒だったら//
+				if (board[i][j] == board[i][j + 2] && board[i][j] == board[i][j + 3] && board[i][j] == board[i][j + 4]) {
 
 					switch (board[i][j]) {
 
 					case STONE_BLACK:
-						blacklencheck = 0;
+						winnerBlack++;
 						break;
 
 					case STONE_WHITE:
-						whitelencheck = 0;
+						winnerWhite++;
 						break;
 
 					}
-
 				}
-
 			}
+			
 
 		}
 
@@ -262,33 +252,33 @@ int result_check(int board[][BOARD_SIZE]) {
 				switch (board[i][j]) {
 
 				case STONE_BLACK:
-					blacklencheck++;
+					winnerBlack++;
 					break;
 
 				case STONE_WHITE:
-					whitelencheck++;
+					winnerWhite++;
 					break;
 
 				}
 
+				if (i < 7 && j < 7) {
+					//3個目4個目5個目で置いたものが一緒だったら//
+					if (board[i][j] == board[i + 2][j + 2] || board[i][j] == board[i + 3][j + 3] || board[i][j] == board[i + 4][j + 4]) {
 
-				//3個目4個目5個目で碁石の色が違えば初期化する//
-				if (board[i][j] != board[i+2][j + 2] || board[i][j] != board[i+3][j + 3] || board[i][j] != board[i+4][j + 4]) {
+						switch (board[i][j]) {
 
-					switch (board[i][j]) {
+						case STONE_BLACK:
+							winnerBlack++;
+							break;
 
-					case STONE_BLACK:
-						blacklencheck = 0;
-						break;
+						case STONE_WHITE:
+							winnerWhite++;
+							break;
 
-					case STONE_WHITE:
-						whitelencheck = 0;
-						break;
+						}
 
 					}
-
 				}
-
 			}
 
 		}
@@ -296,12 +286,12 @@ int result_check(int board[][BOARD_SIZE]) {
 	}
 
 
-	if (whitelencheck >= 4) {
+	if (winnerWhite==1) {
 
 		printf("白の勝ちです。\n");
 		return true;
 	}
-	else if (blacklencheck >= 4) {
+	else if ( winnerBlack == 1) {
 
 		printf("黒の勝ちです。\n");
 		return true;
@@ -340,6 +330,7 @@ void input_hantei(int board[][BOARD_SIZE], int which) {
 
 		if (Checkout(pos_x, pos_y) && board[pos_y][pos_x] == STONE_SPACE) {
 
+			
 			switch (board[pos_y][pos_x]) {
 
 			case STONE_BLACK:
@@ -351,7 +342,7 @@ void input_hantei(int board[][BOARD_SIZE], int which) {
 				break;
 
 			}
-
+			
 			break;
 		}
 
