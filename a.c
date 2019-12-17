@@ -5,6 +5,9 @@
 #define STONE_BLACK 1
 #define STONE_WHITE 2
 
+#define TRUE 1
+#define FALSE 0
+
 void gameInit(int board[][BOARD_SIZE], int *which_turn);
 void InitBoard(int board[][BOARD_SIZE]);
 void BoardPrint(int board[][BOARD_SIZE]);
@@ -38,7 +41,7 @@ int main(void) {
 		BoardPrint(board);
 
 		//勝利判定//
-		if (result_check(board) == true) { break; };
+		if (result_check(board) == TRUE) { break; };
 
 
 	}
@@ -98,9 +101,11 @@ void BoardPrint(int board[][BOARD_SIZE]) {
 
 			case STONE_BLACK:
 				printf("●");
+				break;
 
 			case STONE_WHITE:
 				printf("〇");
+				break;
 
 
 			}
@@ -140,11 +145,11 @@ int Checkout(int x, int y) {
 
 	if (x < BOARD_SIZE&&y < BOARD_SIZE&&x >= 0 && y >= 0) {
 
-		return true;
+		return TRUE;
 
 	}
 
-	return false;
+	return FALSE;
 }
 
 //勝利判定//
@@ -289,15 +294,15 @@ int result_check(int board[][BOARD_SIZE]) {
 	if (winnerWhite==1) {
 
 		printf("白の勝ちです。\n");
-		return true;
+		return TRUE;
 	}
 	else if ( winnerBlack == 1) {
 
 		printf("黒の勝ちです。\n");
-		return true;
+		return TRUE;
 	}
 
-	return false;
+	return FALSE;
 
 }
 
