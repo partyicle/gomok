@@ -11,9 +11,11 @@ void drawMap(map_t* map){
                 case BLACK:
                     printf("黒");
                     break;
+
                 case WHITE:
-                    printf("黒");
+                    printf("白");
                     break;
+                    
                 case EMPTY:
                     if     (x==0 && y==0)                           printf("┌");
                     else if(x==map->size_x-1 && y==0)               printf("┐");
