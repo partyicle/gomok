@@ -69,8 +69,6 @@ bool Gobang::isWinner_linear(vector<player> line){
     int nowCombo=0;
     vector<int> combo;
 
-    combo.push_back(0);
-
     for(size_t i=0; i<line.size(); i++){
         if(line[i] == this->turn) {
             nowCombo++;
