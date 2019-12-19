@@ -6,27 +6,15 @@ using namespace std;
 
 int main(void){
 
-    Map field;
-    int a,b;
+    Gobang field;
 
-    while(true){
-        cout << "mapsize X:";
-        cin >> a;
-        cout << "mapsize Y:";
-        cin >> b;
-
-        if(field.setSize(a,b)){ break; }
-        else { cout << "Invalid input"; }
-    }
-
-    if (!field.initialize()){
-        cout << "malloc failed";
-        return 1;
-    } 
+    if(!field.initialize()) {return 1;}
 
     while(true){
         field.printMap();
-        break;
+        field.inputStone();
+        if(field.judgeWin()){break;}
+        field.flipTurn();
     }
 
     return 0;

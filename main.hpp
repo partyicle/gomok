@@ -4,3 +4,4 @@
 
 #include "check.hpp"
 #include "map.hpp"
+#include "gobang.hpp"

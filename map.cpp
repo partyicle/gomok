@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "head.hpp"
+#include "map.hpp"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ bool Map::setSize(int x, int y){
     catch(...){ return false; }
 }
 
-bool Map::initialize(){
+bool Map::resizeMap(){
     try{
         map.resize(this->size_x ,  vector<player>(this->size_y));
 
@@ -30,30 +31,48 @@ bool Map::initialize(){
 }
 
 void Map::printMap() {
+    for(int x=0 ; x < this->size_x ; x++){
+        cout << x;
+    }
+    cout << "\n";
+
     for(int y=0 ; y < this->size_y ; y++){
        for(int x=0 ; x < this->size_x ; x++){
            switch(this->map[x][y]){
                 case BLACK:
-                    cout << "黒";
+                    cout << "O";
                     break;
 
                 case WHITE:
-                    cout << "白";
+                    cout << "X";
                     break;
                     
                 case EMPTY:
-                    if     (x==0 && y==0)                           cout << "┌";
-                    else if(x==this->size_x-1 && y==0)              cout << "┐";
-                    else if(x==0              && y==this->size_y-1) cout << "└";
-                    else if(x==this->size_x-1 && y==this->size_y-1) cout << "┘";
-                    else if(y==0)                                   cout << "┬";
-                    else if(y==this->size_y-1)                      cout << "┴";
-                    else if(x==0)                                   cout << "├";
-                    else if(x==this->size_x-1)                      cout << "┤";
-                    else                                            cout << "┼";
+                    cout << "┼";
            }
 
         }
-        cout << "\n";
+        cout << " " << y << " \n";
     }
+}
+
+bool Map::initMap(){
+    int a,b;
+
+    while(true){
+        cout << "mapsize X:";
+        cin >> a;
+        cout << "mapsize Y:";
+        cin >> b;
+
+        if(this->setSize(a,b)){ break; }
+        else { cout << "Invalid input" << "\n"; }
+    }
+
+    if (!this->resizeMap()){
+        cout << "malloc failed";
+        return false;
+    } 
+
+    return true;
 }

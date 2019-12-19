@@ -4,13 +4,15 @@
 using namespace std;
 
 class Map {
-private:
+protected:
     vector< vector<player> > map;
     int size_x;
     int size_y;
 
-public:
     bool setSize(int x, int y);
-    bool initialize();
-    void printMap();
+    bool resizeMap();
+public:
+    virtual bool initMap();
+    virtual void printMap();
+    virtual bool isWinner() = 0;
 };
